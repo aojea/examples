@@ -14,11 +14,22 @@ script:
 before_install:
   # Download and install Kind and kubectl
   - GO111MODULE=on go get sigs.k8s.io/kind
-  - kind create cluster --config kind-config.yaml
+  - kind create cluster --config kind-config.yaml --loglevel debug --wait 1m
   - export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
+  - ./kubectl wait -n kube-system --for=condition=Ready -l k8s-app=kube-dns pods
   - ./kubectl get nodes -o wide
   - ./kubectl get pods --all-namespaces -o wide
   - ./kubectl get services --all-namespaces -o wide
+  - curl http://google.com
+  - docker run --rm -it alpine sh -c 'apk add curl;curl http://google.com'
+  - ./kubectl apply -f https://gist.githubusercontent.com/aojea/5de3b3f231322a657202aa12d09f94cf/raw/d45b7de5bb9f04abeb04aaa03d0a1ae5376c784b/custom-upstream-dns.yml
+  - ./kubectl apply -f https://k8s.io/examples/admin/dns/busybox.yaml
+  - ./kubectl wait --for=condition=Ready pod busybox
+  - ./kubectl exec -ti busybox -- cat /etc/resolv.conf
+  - ./kubectl exec -ti busybox -- nslookup kubernetes.default
+  - ./kubectl exec -ti busybox -- nslookup www.google.com || true
+  - ./kubectl exec -ti busybox -- ip a
+  - ./kubectl exec -ti busybox -- traceroute 8.8.8.8
 
