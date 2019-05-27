@@ -20,11 +20,12 @@ before_install:
   - chmod +x ./kubectl
   - ./kubectl wait -n kube-system --for=condition=Ready -l k8s-app=kube-dns pods
   - ./kubectl apply -f https://gist.githubusercontent.com/aojea/91b03f86ccdc374ff9099f23ea2564c3/raw/e96504522d940610ceb65a4e5594e159400b0945/ip-masq.yaml
+  - sleep 10
   - ./kubectl get nodes -o wide
   - ./kubectl get pods --all-namespaces -o wide
   - ./kubectl get services --all-namespaces -o wide
   - curl http://google.com
-  - docker run --rm -it alpine sh -c 'apk add curl;curl http://google.com'
+  - docker run --rm -it alpine sh -c 'iptables-save'
   - ./kubectl apply -f https://k8s.io/examples/admin/dns/busybox.yaml
   - ./kubectl wait --for=condition=Ready pod busybox
   - ./kubectl exec -ti busybox -- cat /etc/resolv.conf
