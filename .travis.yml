@@ -19,8 +19,8 @@ before_install:
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
   - ./kubectl wait -n kube-system --for=condition=Ready -l k8s-app=kube-dns pods
-  - ./kubectl apply -f https://gist.githubusercontent.com/aojea/91b03f86ccdc374ff9099f23ea2564c3/raw/e96504522d940610ceb65a4e5594e159400b0945/ip-masq.yaml
-  - sleep 10
+  - ./kubectl apply -f https://gist.githubusercontent.com/aojea/91b03f86ccdc374ff9099f23ea2564c3/raw/3f2800f3887dbed8bbbb677260855649ace8e5d9/ip-masq.yaml
+  - sleep 11
   - ./kubectl get nodes -o wide
   - ./kubectl get pods --all-namespaces -o wide
   - ./kubectl get services --all-namespaces -o wide
