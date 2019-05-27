@@ -1,5 +1,4 @@
 sudo: required
-dist: xenial
 language: go
 go:
     - "1.12"
@@ -20,7 +19,7 @@ before_install:
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
   - ./kubectl wait -n kube-system --for=condition=Ready -l k8s-app=kube-dns pods
-  - ./kubectl apply -f https://gist.githubusercontent.com/aojea/5de3b3f231322a657202aa12d09f94cf/raw/d45b7de5bb9f04abeb04aaa03d0a1ae5376c784b/custom-upstream-dns.yml
+  - ./kubectl apply -f https://gist.githubusercontent.com/aojea/91b03f86ccdc374ff9099f23ea2564c3/raw/e96504522d940610ceb65a4e5594e159400b0945/ip-masq.yaml
   - ./kubectl get nodes -o wide
   - ./kubectl get pods --all-namespaces -o wide
   - ./kubectl get services --all-namespaces -o wide
