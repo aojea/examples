@@ -20,7 +20,8 @@ before_install:
   - chmod +x ./kubectl
   - ./kubectl wait -n kube-system --for=condition=Ready -l k8s-app=kube-dns pods
   - ./kubectl delete configmap ip-masq-agent -n kube-system
-  - ./kubectl apply -f https://gist.githubusercontent.com/aojea/91b03f86ccdc374ff9099f23ea2564c3/raw/3f2800f3887dbed8bbbb677260855649ace8e5d9/ip-masq.yaml
+  - ./kubectl -n kube-system delete daemonset ip-masq-agent
+  - ./kubectl apply -f https://gist.githubusercontent.com/aojea/363d6e91f201879d21ef9b127668b254/raw/305f012e78984d5b04a68fae4ab37981c02d6dbd/ip-masq-kind.yaml
   - sleep 11
   - ./kubectl get nodes -o wide
   - ./kubectl get pods --all-namespaces -o wide
