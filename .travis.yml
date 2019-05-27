@@ -25,7 +25,7 @@ before_install:
   - ./kubectl get pods --all-namespaces -o wide
   - ./kubectl get services --all-namespaces -o wide
   - curl http://google.com
-  - docker run --rm -it alpine sh -c 'iptables-save'
+  - docker exec kind-control-plane iptables-save
   - ./kubectl apply -f https://k8s.io/examples/admin/dns/busybox.yaml
   - ./kubectl wait --for=condition=Ready pod busybox
   - ./kubectl exec -ti busybox -- cat /etc/resolv.conf
