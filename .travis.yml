@@ -14,15 +14,11 @@ script:
 before_install:
   # Download and install Kind and kubectl
   - GO111MODULE=on go get sigs.k8s.io/kind
-  - kind create cluster --config kind-config.yaml --loglevel debug --wait 1m
+  - kind create cluster --image aojea/kindnode:travis --config kind-config.yaml --loglevel debug --wait 1m
   - export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
   - ./kubectl wait -n kube-system --for=condition=Ready -l k8s-app=kube-dns pods
-  - ./kubectl delete configmap ip-masq-agent -n kube-system
-  - ./kubectl -n kube-system delete daemonset ip-masq-agent
-  - ./kubectl apply -f https://gist.githubusercontent.com/aojea/363d6e91f201879d21ef9b127668b254/raw/305f012e78984d5b04a68fae4ab37981c02d6dbd/ip-masq-kind.yaml
-  - sleep 11
   - ./kubectl get nodes -o wide
   - ./kubectl get pods --all-namespaces -o wide
   - ./kubectl get services --all-namespaces -o wide
