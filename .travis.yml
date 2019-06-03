@@ -15,10 +15,11 @@ before_install:
   # Download and install Kind and kubectl
   - GO111MODULE=on go get -u -v sigs.k8s.io/kind
   - kind build node-image --type apt
-  - kind create cluster --config kind-config.yaml --image kindest/node:latest
+  - kind create cluster --config kind-config.yaml --image kindest/node:latest --loglevel debug
   - export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
+  - ./kubectl get pods --all-namespaces -o wide
   - ./kubectl wait -n kube-system --for=condition=Ready -l k8s-app=kube-dns pods
   - ./kubectl get nodes -o wide
   - ./kubectl get pods --all-namespaces -o wide
