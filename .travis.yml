@@ -20,7 +20,7 @@ before_install:
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
   - ./kubectl get pods --all-namespaces -o wide
-  - ./kubectl wait -n kube-system --for=condition=Ready -l k8s-app=kube-dns pods
+  - ./kubectl wait -n kube-system --for=condition=Ready --timeout=1m -l k8s-app=kube-dns pods || true
   - ./kubectl get nodes -o wide
   - ./kubectl get pods --all-namespaces -o wide
   - ./kubectl get services --all-namespaces -o wide
